@@ -1,0 +1,29 @@
+{
+  "name": "04express",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon --exec ts-node src/index.ts"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@types/node": "^22.13.1",
+    "nodemon": "^3.1.9"
+  },
+  "dependencies": {
+    "@types/express": "^5.0.0",
+    "body-parser": "^1.20.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "joi": "^17.13.3",
+    "pg": "^8.13.3",
+    "sequelize": "^6.37.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.3",
+    "url": "^0.11.4"
+  }
+}
