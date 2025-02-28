@@ -1,8 +1,9 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 
 export const updateData = async (
   req: Request,
   res: Response,
+  next: NextFunction,
   Model: any,
   requiredFields: string[],
   dataName: string
@@ -48,6 +49,6 @@ export const updateData = async (
     });
   } catch (error) {
     console.error(`Error while updating ${dataName.toLowerCase()}:`, error);
-    return res.status(500).json({ message: "Internal Server Error" });
+    next(error);
   }
 };

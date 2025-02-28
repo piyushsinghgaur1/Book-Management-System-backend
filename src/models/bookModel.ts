@@ -10,13 +10,24 @@ const Book = sequelize.define(
       type: DataTypes.STRING,
       primaryKey: true,
     },
+    isbn: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+    },
     title: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: true,
     },
     price: {
       type: DataTypes.DECIMAL(10, 2),
       allowNull: false,
+    },
+    discountPrice: {
+      type: DataTypes.DECIMAL(10, 2),
+      allowNull: true,
+      defaultValue: 0,
     },
     publicationDate: {
       type: DataTypes.DATEONLY,

@@ -6,7 +6,9 @@ import categoryRoutes from "./routes/categoryRoutes";
 import bookRoutes from "./routes/bookRoutes";
 import bodyParser from "body-parser";
 import { tableAssociations } from "./config/assotiation";
-const cors = require("cors");
+import cors from "cors";
+import { errorHandler } from "./middleware/errorHandler";
+
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -15,6 +17,9 @@ const PORT = process.env.PORT || 4000;
 app.use(bodyParser.json());
 app.use(cors());
 app.use(express.json());
+
+// Error Handling
+app.use(errorHandler);
 
 // Routes
 app.use("/api/v1/author", authorRoutes);

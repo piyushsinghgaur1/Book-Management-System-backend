@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import Author from "../models/authorModel";
 import { showData } from "../modules/showDataModule";
 import { deleteData } from "../modules/deleteDataModule";
@@ -7,35 +7,42 @@ import { updateData } from "../modules/updateDataModule";
 
 export const getAllAuthor = async (
   req: Request,
-  res: Response
+  res: Response,
+  next: NextFunction
 ): Promise<any> => {
   try {
     const authors = await Author.findAll({
       attributes: ["authorId", "firstName", "lastName"],
     });
-    return showData(req, res, authors, "Authors");
+    return showData(req, res, next, authors, "Authors");
   } catch (error) {
     console.error("Error reading authors data:", error);
-    return res.status(500).json({ message: "Internal Server Error" });
+    next(error);
   }
 };
 
-export const addAuthor = async (req: Request, res: Response): Promise<any> => {
+export const addAuthor = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<any> => {
   const fields = ["authorId", "firstName", "lastName"];
-  return addData(req, res, Author, fields, "Author");
+  return addData(req, res, next, Author, fields, "Author");
 };
 
 export const deleteAuthor = async (
   req: Request,
-  res: Response
+  res: Response,
+  next: NextFunction
 ): Promise<any> => {
-  return deleteData(req, res, Author);
+  return deleteData(req, res, next, Author, "Author");
 };
 
 export const updateAuthor = async (
   req: Request,
-  res: Response
+  res: Response,
+  next: NextFunction
 ): Promise<any> => {
   const fields = ["firstName", "lastName"];
-  return updateData(req, res, Author, fields, "Author");
+  return updateData(req, res, next, Author, fields, "Author");
 };

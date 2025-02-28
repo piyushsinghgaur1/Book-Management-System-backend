@@ -1,14 +1,19 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
+import config from "../config/config";
+const {
+  PAGE_CONFIG: { ITEMS_PER_PAGE },
+} = config;
 
 export const showData = async (
   req: Request,
   res: Response,
+  next: NextFunction,
   data: any,
   dataName: string
 ): Promise<any> => {
   try {
     const page = Number(req.params.pageNumber);
-    const limit = parseInt(process.env.BOOKS_LIMIT || "10", 10);
+    const limit = ITEMS_PER_PAGE || 10;
     const startIndex = (page - 1) * limit;
     const endIndex = page * limit;
 
@@ -32,7 +37,6 @@ export const showData = async (
       )} pages.`,
     });
   } catch (error) {
-    console.error("Error reading data:", error);
-    return res.status(500).json({ message: "Internal Server Error" });
+    next(error);
   }
 };

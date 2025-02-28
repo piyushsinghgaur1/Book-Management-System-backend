@@ -1,8 +1,8 @@
-import { Request, Response } from "express";
-
+import { Request, Response, NextFunction } from "express";
 export const addData = async (
   req: Request,
   res: Response,
+  next: NextFunction,
   Model: any,
   requiredFields: string[],
   dataName: string
@@ -22,6 +22,6 @@ export const addData = async (
     });
   } catch (error) {
     console.error(`Error while adding ${dataName.toLowerCase()}:`, error);
-    return res.status(500).json({ message: "Internal Server Error" });
+    next(error);
   }
 };

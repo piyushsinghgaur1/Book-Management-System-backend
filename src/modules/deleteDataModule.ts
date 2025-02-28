@@ -1,32 +1,33 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 
 export const deleteData = async (
   req: Request,
   res: Response,
-  dataModel: any
+  next: NextFunction,
+  Model: any,
+  dataName: string
 ): Promise<any> => {
-  const dataId = req.params.id;
+  const idField = `${dataName.toLowerCase()}Id`;
+  const dataId = req.params[idField];
 
   if (!dataId) {
-    return res
-      .status(400)
-      .json({ message: `${dataModel.name} ID is required.` });
+    return res.status(400).json({ message: `${idField} is required.` });
   }
 
   try {
-    const dataToDelete = await dataModel.findOne({ where: { id: dataId } });
-    if (!dataToDelete) {
-      return res.status(404).json({ message: `${dataModel.name} not found` });
-    } else {
-      await dataModel.destroy({ where: { id: dataId } });
-      return res.status(200).json({
-        status: 200,
-        data: dataToDelete,
-        message: `${dataModel.name} deleted successfully`,
-      });
+    const data = await Model.findOne({ where: { [idField]: dataId } });
+    if (!data) {
+      return res.status(404).json({ message: `${dataName} not found` });
     }
+
+    await Model.destroy({ where: { [idField]: dataId } });
+    return res.status(200).json({
+      status: 200,
+      data: data,
+      message: `${dataName} deleted successfully`,
+    });
   } catch (error) {
-    console.error(`Error while deleting ${dataModel.name}:`, error);
-    return res.status(500).json({ message: "Internal Server Error" });
+    console.error(`Error while deleting ${dataName.toLowerCase()}:`, error);
+    next(error);
   }
 };
